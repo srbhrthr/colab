@@ -1,0 +1,49 @@
+import numpy as np 
+import pandas as pd 
+from sklearn.linear_model import LinearRegression 
+from sklearn.metrics import mean_squared_error 
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+#Reading Data 
+data = pd.read_csv("D://health.csv") 
+
+# Collecting X and Y 
+X = data["Head_Size_cm_3"].values 
+Y = data["Brain_Weight_grams"].values 
+
+n = len(X) 
+print(n)
+ 
+ 
+X = X.reshape((n, 1)) 
+
+
+X_Train, X_Test, Y_Train, Y_Test = train_test_split(X, Y, test_size = 0.3, random_state = 0)
+
+# Fitting Simple Linear Regression to the training set
+
+reg = LinearRegression()
+reg.fit(X, Y)
+
+# Predicting the Test set result ?
+
+Y_Pred = reg.predict(X)
+print(reg.intercept_)
+print(reg.coef_)
+
+# Visualising the Training set results
+
+plt.scatter(X, Y, color = 'red')
+plt.plot(X, reg.predict(X), color = 'black',marker="*")
+plt.title('Linear Regression')
+plt.xlabel('Head size')
+plt.ylabel('Brain weight')
+plt.show()
+
+# Model Evaluation 
+rmse = np.sqrt(mean_squared_error(Y, Y_Pred)) 
+r2 = reg.score(X, Y) 
+print("RMSE") 
+print(rmse) 
+print("R2 Score") 
+print(r2)
